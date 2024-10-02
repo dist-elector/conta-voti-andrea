@@ -154,6 +154,7 @@
                     document.getElementById('blank-count').textContent = votes.blank;
                     document.getElementById('null-count').textContent = votes.null;
                     updateTotalVotes();
+                    checkQuorum(votes);
                 }
             });
         }
@@ -174,9 +175,38 @@
             }
         }
 
+        // Funzione per verificare se il quorum è stato raggiunto
+        function checkQuorum(votes) {
+            const quorum = 45; // Il quorum è fisso a 45
+
+            if (votes.candidate1 >= quorum) {
+                document.getElementById('candidate1-elected').textContent = 'ELETTO';
+            } else {
+                document.getElementById('candidate1-elected').textContent = '';
+            }
+
+            if (votes.candidate2 >= quorum) {
+                document.getElementById('candidate2-elected').textContent = 'ELETTO';
+            } else {
+                document.getElementById('candidate2-elected').textContent = '';
+            }
+        }
+
+        // Funzione per verificare e aggiornare la scritta dello scrutinio in base alla data
+        function checkScrutinioStatus() {
+            const currentDate = new Date();
+            const targetDate = new Date('2024-10-15T17:00:00');
+
+            if (currentDate >= targetDate) {
+                document.getElementById('scrutinio-text').textContent = 'SCRUTINIO IN CORSO';
+                document.getElementById('scrutinio-text').className = 'scrutinio-in-corso';
+            }
+        }
+
         // Inizializza la pagina con i voti salvati e Firebase
         window.onload = function() {
             loadVotesFromFirebase();
+            checkScrutinioStatus(); // Controlla lo stato dello scrutinio all'inizio
         };
     </script>
 </body>
